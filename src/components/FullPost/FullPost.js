@@ -9,7 +9,7 @@ class FullPost extends Component {
     }
 
     deleteHandler = () => {
-        axios.delete(`https://jsonplaceholder.typicode.com/posts/${this.props.id}`)
+        axios.delete(`/posts/${this.props.id}`)
         .then(res => console.log(res))
     }
 
@@ -36,7 +36,7 @@ class FullPost extends Component {
         console.log('[FullPost] comupd')
         if(this.props.id) {
             if(!this.state.loadedPost || (this.state.loadedPost && this.props.id !== this.state.loadedPost.id)) {
-                axios.get(`https://jsonplaceholder.typicode.com/posts/${this.props.id}`)
+                axios.get(`/posts/${this.props.id}`)
                 .then(res => {
                     console.log(res)
                     //This would cause re-render and hence infinte loop if pre-checks aren't there.
@@ -46,7 +46,7 @@ class FullPost extends Component {
             }
         }
     }
-    
+
 }
 
 export default FullPost;
