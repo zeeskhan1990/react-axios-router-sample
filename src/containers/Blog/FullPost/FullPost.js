@@ -9,13 +9,13 @@ class FullPost extends Component {
     }
 
     deleteHandler = () => {
-        axios.delete(`/posts/${this.props.id}`)
+        axios.delete(`/posts/${this.props.match.params.id}`)
         .then(res => console.log(res))
     }
 
     render () {
         let post = <p>Please select a Post!</p>;
-        if(this.props.id)
+        if(this.props.match.params.id)
             post = <p>Loading....</p>;
         if(this.state.loadedPost) {
             post = (
@@ -32,11 +32,11 @@ class FullPost extends Component {
         return post;
     }
 
-    componentDidUpdate() {
-        console.log('[FullPost] comupd')
-        if(this.props.id) {
-            if(!this.state.loadedPost || (this.state.loadedPost && this.props.id !== this.state.loadedPost.id)) {
-                axios.get(`/posts/${this.props.id}`)
+    loadData() {
+        const postId = this.props.match.params.id
+        if(postId) {
+            if(!this.state.loadedPost || (this.state.loadedPost && parseInt(postId) !== this.state.loadedPost.id)) {
+                axios.get(`/posts/${postId  }`)
                 .then(res => {
                     console.log(res)
                     //This would cause re-render and hence infinte loop if pre-checks aren't there.
@@ -45,6 +45,19 @@ class FullPost extends Component {
                 })
             }
         }
+    }
+
+    componentDidMount() {
+        console.log('[FullPost] compDM')
+        console.log(this.props)
+        this.loadData()
+    }
+
+    componentDidUpdate() {
+        console.log('[FullPost] compDU')
+        console.log(this.props)
+        this.loadData()
+
     }
 
 }
